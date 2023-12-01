@@ -37,10 +37,9 @@ def part_one(input_file: str):
     total = 0
     num_pattern = re.compile(r"\d")
     for line in load_and_split_lines(input_file):
-        first = re.search(num_pattern, line).group()
-        last = re.search(num_pattern, line[::-1]).group()
+        digits = re.findall(num_pattern, line)
 
-        total += int(first + last)
+        total += int(digits[0] + digits[-1])
 
     return total
 
