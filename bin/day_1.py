@@ -38,7 +38,6 @@ def part_one(input_file: str):
     num_pattern = re.compile(r"\d")
     for line in load_and_split_lines(input_file):
         digits = re.findall(num_pattern, line)
-
         total += int(digits[0] + digits[-1])
 
     return total
