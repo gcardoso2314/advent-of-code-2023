@@ -9,7 +9,9 @@ def part_one(input_file: str):
     seeds = [int(num) for num in seed_nums.split()]
 
     mappings: dict[str, str] = {}  # to save what maps to what e.g. seed to soil
-    num_mappings: dict[str, dict[int, int]] = {}  # saving the actual mappings
+    num_mappings: dict[
+        str, dict[tuple[int, int], int]
+    ] = {}  # saving the actual mappings
 
     current_source = ""
     current_destination = ""
@@ -22,10 +24,33 @@ def part_one(input_file: str):
             current_source = mapping[0]
             current_destination = mapping[-1]
             mappings[current_source] = current_destination
+            num_mappings[current_source] = {}
+            continue
 
         destination_start, source_start, range_length = [
             int(num) for num in line.split()
         ]
+        num_mappings[current_source].update(
+            {(source_start, source_start + range_length): destination_start}
+        )
+
+    source = "seed"
+    mapped_nums = seeds
+    while source in mappings:
+        next_nums = []
+        for i, num in enumerate(mapped_nums):
+            next_nums.append(num)
+            for (source_start, source_end), destination_start in num_mappings[
+                source
+            ].items():
+                if source_start <= num < source_end:
+                    next_nums[i] = (num - source_start) + destination_start
+                    break
+
+        mapped_nums = next_nums
+        source = mappings[source]
+
+    return min(mapped_nums)
 
 
 @time_it
