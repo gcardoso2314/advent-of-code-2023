@@ -78,9 +78,13 @@ def part_two(input_file: str):
         cycle_results.append(tilted_rocks.copy())
 
     chain_start = cycle_results.index(tilted_rocks)
-    final_result = (n_cycles - chain_start) % (len(cycle_results) - chain_start)
+    chain_len = len(cycle_results) - chain_start
+    remainder = (n_cycles - chain_start) % chain_len
 
-    return calculate_load(cycle_results[chain_start + final_result - 1])
+    if remainder == 0:
+        return calculate_load(cycle_results[chain_start + chain_len - 1])
+
+    return calculate_load(cycle_results[chain_start + remainder - 1])
 
 
 def main():
