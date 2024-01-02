@@ -29,6 +29,8 @@ def find_smudge_reflections(pattern: list[list[int]]):
             total_diff += sum(
                 map(lambda a: abs(a[0] - a[1]), zip(pattern[i - j], pattern[i + 1 + j]))
             )
+            if total_diff > 1:
+                break
 
         if total_diff == 1:  # exactly one smudge
             reflections.append(i + 1)  # number of cols above line
